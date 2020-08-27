@@ -1,0 +1,13 @@
+<FilesMatch "\.(eot|ttf|otf|woff)$">
+<IfModule mod_headers.c>
+Header set Access-Control-Allow-Origin: "*"
+</IfModule>
+</FilesMatch>
+
+#allow examples for jsfiddle
+<IfModule mod_headers.c>
+#Header set Access-Control-Allow-Origin: "*"
+#Header set Access-Control-Allow-Origin: "http://fiddle.jshell.net"
+Header set Access-Control-Allow-Origin "*"
+Header set Access-Control-Allow-Credentials true
+</IfModule>

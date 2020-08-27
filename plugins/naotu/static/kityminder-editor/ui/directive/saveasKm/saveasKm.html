@@ -1,0 +1,14 @@
+<div class="btn-group-vertical" dropdown is-open="isopen">
+    <button type="button"
+            class="btn btn-default saveaskm"
+            title="{{ 'saveaskm' | lang:'ui' }}"
+            ng-class="{'active': isopen}"
+            ng-click="saveasKm()"></button>
+    <button type="button"
+            class="btn btn-default saveaskm-caption dropdown-toggle"
+            ng-click="saveasKm()"
+            title="{{ 'saveaskm' | lang:'ui' }}">
+        <span class="caption">{{ 'saveaskm' | lang:'ui' }}</span>
+        <span class="sr-only">{{ 'saveaskm' | lang:'ui' }}</span>
+    </button>
+</div>
