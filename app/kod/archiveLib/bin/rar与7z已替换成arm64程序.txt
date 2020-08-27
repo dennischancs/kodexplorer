@@ -1,3 +1,4 @@
-rar与7z已替换成arm64程序:
+rar与7z已替换成arm64程序 from alpine 3.12:
 rar 即 unrar改名
 7z  即 7za改名
+
