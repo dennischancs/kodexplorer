@@ -1,4 +1,4 @@
-FROM php:rc-fpm-alpine3.12@sha256:35ee4889d86ad2cd829590d8eb77d8a006cdf75c5c7950bdfcee6303f73b3f21
+FROM php:rc-fpm-alpine3.12
 
 # 官方最新版4.40
 # ENV KODEXPLORER_VERSION=4.40
@@ -16,11 +16,15 @@ COPY index.php /var/www/html/index.php
 RUN chmod -R 755 /var/www/html && \
     sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk add --no-cache --update \
-        freetype libpng libjpeg-turbo \
-        freetype-dev libpng-dev libjpeg-turbo-dev && \
-    docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ && \
+        freetype libpng libjpeg-turbo libwebp libxpm \
+        freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev&& \
+    docker-php-ext-configure gd --enable-gd \
+		--with-freetype=/usr/include/ \
+	    --with-xpm=/usr/include/ \
+	    --with-webp=/usr/include/ \
+		--with-jpeg=/usr/include/ && \
     docker-php-ext-install -j "$(getconf _NPROCESSORS_ONLN)" gd && \
-    apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev
+    apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev
 
 # 指定工作目录
 WORKDIR /var/www/html
