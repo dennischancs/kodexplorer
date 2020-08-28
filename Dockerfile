@@ -23,7 +23,7 @@ RUN mkdir -p /usr/src/kodexplorer && \
   apk add --no-cache wget bash && \
   cd /tmp && \
   wget "$KODEXPLORER_URL" && \
-  unzip kodexplorer4.40.zip -d /usr/src/kodexplorer \
+  unzip kodexplorer4.40.zip -d /usr/src/kodexplorer && \
   # 下载插件包
   export all_proxy='socks5://192.168.1.108:7890' http_proxy='http://192.168.1.108:7890' https_proxy='http://192.168.1.108:7890' && \
   wget https://github.com/zhtengw/kodexplorer-plugins/releases/download/v2020.06.01/plugins-pack-2020.06.01-for_kodexplorer.zip && \
@@ -59,15 +59,16 @@ RUN mkdir -p /usr/src/kodexplorer && \
   unset all_proxy http_proxy https_proxy
 
 # 指定工作目录
-WORKDIR /localdata
+WORKDIR /volume2
 
-VOLUME /localdata
+VOLUME /volume2
 
 # 设置启动项
 COPY entrypoint.sh /usr/local/bin/
-RUN chmod a+x /usr/local/bin/entrypoint.sh
+RUN chmod a+x /usr/local/bin/entrypoint.sh && \
+    echo "<?php define(\"DATA_PATH\",'/volume2/kodexplorer/data/'); " > /usr/src/kodexplorer/config/define.php
 
-EXPOSE 5660
+EXPOSE 80
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD [ "sh", "-c", "php -S 0.0.0.0:5660", "-t", "/var/www/html"] 
+CMD [ "php", "-S", "0000:80", "-t", "/var/www/html" ]
