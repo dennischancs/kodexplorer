@@ -19,19 +19,18 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev
 
 # KODEXPLORER 程序部署 [自己修改的，含onlyoffice插件]
-COPY app /var/www/html/app
-COPY config /var/www/html/config
-COPY data /var/www/html/data
-COPY plugins /var/www/html/plugins
-COPY static /var/www/html/static
-COPY index.php /var/www/html/index.php
-RUN chmod -R 755 /var/www/html
-
-VOLUME /localdata
+COPY kodexplorer /usr/src/kodexplorer/
 
 # 指定工作目录
 WORKDIR /localdata
 
+VOLUME /localdata
+
+# 设置启动项
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod a+x /usr/local/bin/entrypoint.sh
+
 EXPOSE 5660
 
-CMD [ "sh", "-c", "php -S 0.0.0.0:5660", "-t", "/var/www/html"]
+ENTRYPOINT ["entrypoint.sh"]
+CMD [ "php", "-S", "0000:5660", "-t", "/var/www/html" ]
