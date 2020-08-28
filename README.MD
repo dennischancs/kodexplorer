@@ -17,5 +17,15 @@ docker run -d \
 ```
 
 # 其它：onlyoffice插件的使用
+ONLYOFFICE Document Server is an online office suite comprising viewers and editors for texts, spreadsheets and presentations, fully compatible with Office Open XML formats: .docx, .xlsx, .pptx and enabling collaborative editing in real time.
 
-[sit17/kodexplorer_onlyoffice: kodexplorer_onlyoffice](https://github.com/sit17/kodexplorer_onlyoffice)
+> kodexplorer_onlyoffice插件：[sit17/kodexplorer_onlyoffice: kodexplorer_onlyoffice](https://github.com/sit17/kodexplorer_onlyoffice)
+
+> ONLYOFFICE/DocumentServer社区版
+* [ONLYOFFICE/DocumentServer](https://github.com/ONLYOFFICE/DocumentServer)
+* [ONLYOFFICE/Docker-DocumentServer](https://github.com/ONLYOFFICE/Docker-DocumentServer)
+
+```bash
+# onlyoffice/documentserver为社区版镜像
+sudo docker run -i -t -d -p 80:80 onlyoffice/documentserver
+```
