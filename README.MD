@@ -21,7 +21,7 @@ ONLYOFFICE Document Server is an online office suite comprising viewers and edit
 
 > kodexplorer_onlyoffice插件：[sit17/kodexplorer_onlyoffice: kodexplorer_onlyoffice](https://github.com/sit17/kodexplorer_onlyoffice)
 
-> ONLYOFFICE/DocumentServer社区版
+> ONLYOFFICE/DocumentServer社区版【无arm64版】
 * [ONLYOFFICE/DocumentServer](https://github.com/ONLYOFFICE/DocumentServer)
 * [ONLYOFFICE/Docker-DocumentServer](https://github.com/ONLYOFFICE/Docker-DocumentServer)
 
