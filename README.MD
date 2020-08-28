@@ -1,8 +1,8 @@
 # kodexplorer for arm64
 
-1、基于kodexplorer 4.40
-2、增加github上所有找得到的插件（街机模拟器除外）
-3、数据与/var/www/html文件夹分离，可挂载到/volume2并设置为工作目录
+1. 基于kodexplorer 4.40
+2. 增加github上所有找得到的插件（街机模拟器除外）
+3. 数据与/var/www/html文件夹分离，可挂载到/volume2并设置为工作目录
 
 # 使用方法
 
