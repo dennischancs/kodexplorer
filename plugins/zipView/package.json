@@ -28,7 +28,7 @@
 			"type":"tags",
 			"display":"{{LNG.Plugin.Config.fileExt}}",
 			"desc":"{{LNG.Plugin.Config.fileExtDesc}}",
-			"value":"zip,tar,gz,tgz,ipa,apk,rar,7z,iso,bz2,zx,z,arj,epub",
+			"value":"zip,tar,gz,tgz,ipa,apk,rar,7z,iso,bz2,zx,z,arj,epub,xz",
 		},
 		"fileSort":{
 			"type":"number",
