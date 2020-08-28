@@ -18,7 +18,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     docker-php-ext-install -j "$(getconf _NPROCESSORS_ONLN)" gd && \
     apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev
 
-# KODEXPLORER 程序部署
+# KODEXPLORER 程序部署 [自己修改的，含onlyoffice插件]
 COPY app /var/www/html/app
 COPY config /var/www/html/config
 COPY data /var/www/html/data
