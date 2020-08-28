@@ -24,6 +24,8 @@ RUN mkdir -p /usr/src/kodexplorer && \
   cd /tmp && \
   wget "$KODEXPLORER_URL" && \
   unzip kodexplorer4.40.zip -d /usr/src/kodexplorer && \
+  # Deprecated: Array and string offset access syntax with curly braces is deprecated in common.function.php on line 1031
+  sed -i 's/ord($text{strlen($text)-1})/ord($text[strlen($text)-1])/' /usr/src/kodexplorer/app/function/common.function.php && \
   # 下载插件包
   export all_proxy='socks5://192.168.1.108:7890' http_proxy='http://192.168.1.108:7890' https_proxy='http://192.168.1.108:7890' && \
   wget https://github.com/zhtengw/kodexplorer-plugins/releases/download/v2020.06.01/plugins-pack-2020.06.01-for_kodexplorer.zip && \
