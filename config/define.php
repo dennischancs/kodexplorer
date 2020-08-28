@@ -1,1 +1,2 @@
-<?php define('DATA_PATH','/data/');
+<?php
+define("DATA_PATH",'/localdata/');

@@ -27,10 +27,10 @@ COPY static /var/www/html/static
 COPY index.php /var/www/html/index.php
 RUN chmod -R 755 /var/www/html
 
-# 指定工作目录
-WORKDIR /var/www/html
+VOLUME /localdata
 
-VOLUME /data
+# 指定工作目录
+WORKDIR /localdata
 
 EXPOSE 5660
 
