@@ -759,7 +759,6 @@ function html2txt($document){
 } 
 
 // 获取内容第一条
-// php8.0中，match为半保留关键字，故替换match为 matchhh，使用`sed -i 's/<\match\>/matchhh/g' ./app/function/common.function.php`
 function match($content, $preg){
 	$preg = "/" . $preg . "/isU";
 	preg_match($preg, $content, $result);
