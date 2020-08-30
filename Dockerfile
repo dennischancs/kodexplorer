@@ -24,7 +24,7 @@ RUN mkdir -p /usr/src/kodexplorer && \
   cd /tmp && \
   wget "$KODEXPLORER_URL" && \
   unzip kodexplorer4.40.zip -d /usr/src/kodexplorer && \
-  # Deprecated: Array and string offset access syntax with curly braces is deprecated in common.function.php on line 1031
+  # Fix bug: `Deprecated: Array and string offset access syntax with curly braces is deprecated in common.function.php on line 1031`
   sed -i 's/ord($text{strlen($text)-1})/ord($text[strlen($text)-1])/' /usr/src/kodexplorer/app/function/common.function.php && \
   # 下载插件包
   export all_proxy='socks5://192.168.1.108:7890' http_proxy='http://192.168.1.108:7890' https_proxy='http://192.168.1.108:7890' && \
@@ -58,7 +58,9 @@ RUN mkdir -p /usr/src/kodexplorer && \
   cp -f /usr/bin/unrar /usr/src/kodexplorer/plugins/zipView/lib/bin/rar_mac && \
   apk del wget bash && \
   rm -rf /tmp/* && \
-  unset all_proxy http_proxy https_proxy
+  unset all_proxy http_proxy https_proxy && \
+  # Fix plugin bug: adminer
+  sed -i 's/break;default:continue/break;default:continue 2/g' /usr/src/kodexplorer/plugins/adminer/adminer/index.php
 
 # 指定工作目录
 WORKDIR /volume2
