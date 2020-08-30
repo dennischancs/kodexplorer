@@ -25,7 +25,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 # [docker - example adding www-data user to alpine images](https://gist.github.com/briceburg/47131d8caf235334b6114954a6e64922)
 RUN set -x ; \
     addgroup -g 82 -S www-data ; \
-    adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
+    adduser -u 82 -D -S -G www-data www-data
 
 USER www-data
 # 官方最新版4.40
