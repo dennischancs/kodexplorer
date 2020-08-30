@@ -1,4 +1,6 @@
-# kodexplorer for arm64
+# kodexplorer not only for arm64
+
+`已经使用github的buildx action实现构建支持多cpu的镜像`
 
 1. 基于kodexplorer 4.40
 2. 增加github上所有找得到的插件（街机模拟器除外）
