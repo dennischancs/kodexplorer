@@ -11,6 +11,10 @@ fi
 
 if [ ! -e '/var/www/html/index.php' ]; then
     cp -a /usr/src/kodexplorer/* /var/www/html/
+	chmod -R 755 /var/www/html/
 fi
+
+chmod -R 755 /var/www/html/
+chmod -R 755 /volume2/kodexplorer/data/
 
 exec "$@"
