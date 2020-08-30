@@ -1,0 +1,20 @@
+version: "3.2"
+services:
+  nginx:
+    image: nginx:stable-alpine
+    container_name: nginx
+    hostname: nginx
+    privileged: true
+    volumes:
+    - /var/media/emmcDATA/bisheng_data/service/nginx/config:/etc/nginx:rw
+    - /var/media/emmcDATA/bisheng_data/service/nginx/temp:/temp:rw
+    - /var/media/emmcDATA/bisheng_data/service/nginx/keys:/keys:rw
+    ports:
+    - 5260:80
+    - 5263:443
+    restart: on-failure
+    networks:
+    - bisheng
+networks:
+  bisheng:
+    external: true

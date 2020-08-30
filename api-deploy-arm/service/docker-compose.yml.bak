@@ -1,0 +1,76 @@
+version: "3.2"
+services:
+  mongod:
+    image: registry.cn-zhangjiakou.aliyuncs.com/bisheng/mongo_arm:3.6
+    container_name: mongod
+    privileged: true
+    volumes:
+       - ${basedir}/service/mongod/db/:/data/db:rw
+       - ${basedir}/service/mongod/config/:/data/configdb:rw
+       - ${basedir}/service/mongod/log/:/data/log:rw
+#    ports:
+#      - 27017:27017
+    restart: on-failure
+    command: --config /data/configdb/mongod.conf
+    networks:
+      bisheng:
+        aliases:
+        - mongod
+
+
+  redis:
+    image: registry.cn-zhangjiakou.aliyuncs.com/bisheng/redis_arm:4.0
+    container_name: redis
+    privileged: true
+    volumes:
+       - ${basedir}/service/redis/db:/data:rw
+       - ${basedir}/service/redis/config/redis.conf:/usr/local/etc/redis/redis.conf:rw
+#    ports:
+#      - 6379:6379
+    restart: on-failure:10
+    command: /usr/local/etc/redis/redis.conf
+    networks:
+      bisheng:
+        aliases:
+        - redis
+
+
+  rabbit:
+    image: registry.cn-zhangjiakou.aliyuncs.com/bisheng/rabbitmq_arm:3.6
+    container_name: rabbit
+    privileged: true
+    volumes:
+       - ${basedir}/service/rabbitmq/data/:/var/lib/rabbitmq/mnesia:rw
+       - ${basedir}/service/rabbitmq/config:/etc/rabbitmq:rw
+#    ports:
+#      - 4369:4369
+#      - 5671-5672:5671-5672
+#      - 15672:15672
+#      - 25672:25672
+    restart: on-failure:10
+    networks:
+      bisheng:
+        aliases:
+        - rabbit
+
+  minio:
+    image: registry.cn-zhangjiakou.aliyuncs.com/bisheng/minio_arm:latest
+    container_name: minio
+    privileged: true
+    volumes:
+      - ${basedir}/service/minio/data:/data:rw
+      - ${basedir}/service/minio/config:/root/.minio:rw
+    environment:
+      MINIO_ACCESS_KEY: 9QPAQ65R1SO1NDHNYESN
+      MINIO_SECRET_KEY: X9MquX/OTU35GLApKJ8tEMqBcTcXc4WSKigkroUI
+#    ports:
+#      - 9000:9000
+    restart: on-failure
+    command: server /data
+    networks:
+      bisheng:
+        aliases:
+        - minio
+networks:
+  bisheng:
+    external: true
