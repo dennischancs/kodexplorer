@@ -12,6 +12,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 	    --with-webp=/usr/include/ \
 		--with-jpeg=/usr/include/ && \
     docker-php-ext-install -j "$(getconf _NPROCESSORS_ONLN)" gd && \
+    docker-php-ext-configure exif --enable-exif && docker-php-ext-install exif && \
     apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev
 
 # 官方最新版4.40
