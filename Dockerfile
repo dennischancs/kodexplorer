@@ -91,7 +91,7 @@ VOLUME /volume2
 # COPY entrypoint.sh /usr/local/bin/
 # RUN chmod a+x /usr/local/bin/entrypoint.sh
 
-EXPOSE 80
+EXPOSE 5210
 
 # ENTRYPOINT ["entrypoint.sh"]
-CMD [ "php", "-S", "0000:80", "-t", "/var/www/html" ]
+CMD [ "php", "-S", "0000:5210", "-t", "/var/www/html" ]
