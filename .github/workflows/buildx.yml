@@ -30,7 +30,7 @@ jobs:
         run: |
           DOCKER_IMAGE=dennischancs/kodexplorer
           DOCKER_PLATFORMS=linux/arm64
-          VERSION=edge
+          VERSION=latest
 
           if [[ $GITHUB_REF == refs/tags/* ]]; then
             VERSION=${GITHUB_REF#refs/tags/v}
