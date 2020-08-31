@@ -68,7 +68,7 @@ RUN apk add --no-cache wget bash && \
     # 2. cp AriaNg Icon
     cp ${KOD_DIR}/static/ariang/touchicon.png ${KOD_DIR}/static/images/file_icon/icon_app/ariang.png && \
     # 3. add to apps.php
-    sed -i 's#"undefined":0}}#undefined":0},"AriaNg":{"type":"url","content":"\/static\/ariang\/index\.html","group":"tools","name":"AriaNg","desc":"aria2c download","icon":"ariang.png","width":"70%","height":"60%","simple":0,"resize":1,"undefined":0}}#' \
+    sed -i 's#"undefined":0}}#"undefined":0},"AriaNg":{"type":"url","content":"\/static\/ariang\/index\.html","group":"tools","name":"AriaNg","desc":"downloader","icon":"ariang.png","width":"70%","height":"60%","simple":0,"resize":1,"undefined":0}}#' \
         ${KOD_DIR}/data/system/apps.php && \
     # 4. init newuser's desktop
     sed -i 's#trello#trello,AriaNg#' ${KOD_DIR}/config/setting.php && \
