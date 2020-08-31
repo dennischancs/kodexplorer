@@ -6,7 +6,7 @@ ENV TZ=Asia/Shanghai
 # 官方最新版4.40
 ENV KODEXPLORER_VERSION=4.40
 ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KODEXPLORER_VERSION}.zip"
-ENV KOD_DIR=/usr/src/kodexplorer
+ENV KOD_DIR=/var/www/html
 
 # 编译基础环境
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
@@ -27,8 +27,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     echo "${TZ}" > /etc/timezone
 
 # 安装kodexplorer并添加插件
-RUN mkidr -p ${KOD_DIR} && \
-    cd /tmp && \
+RUN cd /tmp && \
     wget "$KODEXPLORER_URL" && \
     unzip kodexplorer4.40.zip -d ${KOD_DIR} && \
     echo "<?php define(\"DATA_PATH\",'/koddata/'); " > ${KOD_DIR}/config/define.php  && \
@@ -72,11 +71,11 @@ RUN mkidr -p ${KOD_DIR} && \
 # 指定工作目录
 WORKDIR /koddata
 
-VOLUME /kodhtml /koddata
+VOLUME /koddata
 
 # 设置启动项
 COPY entrypoint.sh /usr/local/bin/
 RUN chmod a+x /usr/local/bin/entrypoint.sh
 
 ENTRYPOINT ["entrypoint.sh"]
-CMD [ "php", "-S", "0000:9000", "-t", "/kodhtml" ]
+CMD [ "php", "-S", "0000:9000", "-t", "/var/www/html" ]
