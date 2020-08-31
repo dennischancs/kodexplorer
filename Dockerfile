@@ -19,8 +19,7 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev && \
     # change the TimeZone
     cp /usr/share/zoneinfo/"${TZ}" /etc/localtime && \
-    echo "${TZ}" > /etc/timezone && \
-    apk del tzdata
+    echo "${TZ}" > /etc/timezone
 
 # 官方最新版4.40
 ENV KODEXPLORER_VERSION=4.40
