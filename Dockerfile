@@ -1,5 +1,6 @@
 FROM php:7.4.9-fpm-alpine3.12
 
+USER root
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Shanghai
 
@@ -8,7 +9,6 @@ ENV KODEXPLORER_VERSION=4.40
 ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KODEXPLORER_VERSION}.zip"
 ENV KOD_DIR=/var/www/html
 
-USER root
 # 编译基础环境
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk add --no-cache --update tzdata wget bash \
@@ -29,16 +29,11 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 
 # Fix [Error Code:1002]
 # [docker - example adding www-data user to alpine images](https://gist.github.com/briceburg/47131d8caf235334b6114954a6e64922)
-RUN adduser --disabled-password \
-      --shell=/bin/sh \
-      --uid=1000 \
-      php && \
-    addgroup php www-data && \
-    mkdir -p ${KOD_DIR} && chown -R php:www-data ${KOD_DIR} &&\
-    mkdir -p /volume2/kodexplorer/data && chown -R php:www-data /volume2
+RUN mkdir /volume2 && \
+    chown www-data:www-data /var/www/html /volume2 && \
+    chmod 777 /var/www/html /volume2
 
-USER php
-
+USER www-data
 # 安装kodexplorer并添加插件
 RUN cd /tmp && \
   wget "$KODEXPLORER_URL" && \
@@ -81,17 +76,15 @@ RUN cd /tmp && \
   # Fix plugin bug: adminer
   sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php
 
-
 # 指定工作目录
 WORKDIR /volume2
 
 VOLUME /volume2
 
-# # 设置启动项
-# COPY entrypoint.sh /usr/local/bin/
-# RUN chmod a+x /usr/local/bin/entrypoint.sh
+USER root
+# 设置启动项
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod a+x /usr/local/bin/entrypoint.sh
 
-EXPOSE 5210
-
-# ENTRYPOINT ["entrypoint.sh"]
-CMD [ "php", "-S", "0000:5210", "-t", "/var/www/html" ]
+ENTRYPOINT ["entrypoint.sh"]
+CMD [ "php", "-S", "0000:9000", "-t", "/var/www/html" ]

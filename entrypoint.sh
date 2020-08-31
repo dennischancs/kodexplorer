@@ -1,6 +1,8 @@
 #!/bin/sh
 
-chown -R php:www-data /var/www/html
-chmod -R 755 /var/www/html/
-chown -R php:www-data /volume2/kodexplorer/data/
-chmod -R 755 /volume2/kodexplorer/data/
+chown -R www-data:www-data /var/www/html
+chmod -R 777 /var/www/html/
+
+mkdir -p /volume2/kodexplorer/data/
+chown -R www-data :www-data /volume2/kodexplorer/data/
+chmod -R 777 /volume2/kodexplorer/data/
