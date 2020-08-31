@@ -74,8 +74,8 @@ WORKDIR /koddata
 VOLUME /koddata
 
 # 设置启动项
-COPY entrypoint.sh /usr/local/bin/
-RUN chmod a+x /usr/local/bin/entrypoint.sh
+# COPY entrypoint.sh /usr/local/bin/
+# RUN chmod a+x /usr/local/bin/entrypoint.sh
 
-ENTRYPOINT ["entrypoint.sh"]
+# ENTRYPOINT ["entrypoint.sh"]
 CMD [ "php", "-S", "0000:9000", "-t", "/var/www/html" ]
