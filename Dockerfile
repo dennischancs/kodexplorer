@@ -56,6 +56,9 @@ RUN apk add --no-cache wget bash && \
     wget -O zoho.zip https://codeload.github.com/hiteochew/kodexplorer-plugins-zoho/zip/master && \
     unzip zoho.zip  && \
     mv kodexplorer-plugins-zoho-master ${KOD_DIR}/plugins/zoho && \
+    # add epub/googeldrive/pdfjs/eml/codeblast & update zipview/dplayer/yzoffice
+    https://raw.githubusercontent.com/dennischancs/kodexplorer/master/.backup/plugins-update.zip && \
+    unzip plugins-update.zip -d ${KOD_DIR}/plugins/ && \
     apk del wget bash && \
     # 替换arm64的7z以及rar
     cp -f /usr/lib/p7zip/7za ${KOD_DIR}/app/kod/archiveLib/bin/7z && \
