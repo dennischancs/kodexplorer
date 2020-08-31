@@ -3,6 +3,11 @@ FROM php:7.4.9-fpm-alpine3.12
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Shanghai
 
+# 官方最新版4.40
+ENV KODEXPLORER_VERSION=4.40
+ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KODEXPLORER_VERSION}.zip"
+ENV KOD_DIR=/var/www/html
+
 USER root
 # 编译基础环境
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
@@ -28,18 +33,14 @@ RUN adduser --disabled-password \
       --shell=/bin/sh \
       --uid=1000 \
       php && \
-    addgroup --gid=82 www-data && \
-    addgroup php www-data
+    addgroup php www-data && \
+    mkdir -p ${KOD_DIR} && chown -R php:www-data ${KOD_DIR} &&\
+    mkdir -p /volume2/kodexplorer/data && chown -R php:www-data /volume2
 
 USER php
-# 官方最新版4.40
-ENV KODEXPLORER_VERSION=4.40
-ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KODEXPLORER_VERSION}.zip"
 
 # 安装kodexplorer并添加插件
-ENV KOD_DIR=/var/www/html
-RUN mkdir -p ${KOD_DIR} && \
-  cd /tmp && \
+RUN cd /tmp && \
   wget "$KODEXPLORER_URL" && \
   unzip kodexplorer4.40.zip -d ${KOD_DIR} && \
   echo "<?php define(\"DATA_PATH\",'/volume2/kodexplorer/data/'); " > ${KOD_DIR}/config/define.php  && \
@@ -78,8 +79,7 @@ RUN mkdir -p ${KOD_DIR} && \
   rm -rf /tmp/* && \
   #unset all_proxy http_proxy https_proxy && \
   # Fix plugin bug: adminer
-  sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php && \
-  chown -R php:www-data ${KOD_DIR}
+  sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php
 
 
 # 指定工作目录
@@ -87,7 +87,7 @@ WORKDIR /volume2
 
 VOLUME /volume2
 
-# 设置启动项
+# # 设置启动项
 # COPY entrypoint.sh /usr/local/bin/
 # RUN chmod a+x /usr/local/bin/entrypoint.sh
 
