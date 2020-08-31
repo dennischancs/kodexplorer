@@ -9,8 +9,7 @@ ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KOD
 ENV KOD_DIR=/usr/src/kodexplorer
 
 # 编译基础环境
-RUN set -x && \
-    sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
     apk add --no-cache --update tzdata wget bash \
         p7zip unrar\
 		freetype libpng libjpeg-turbo libwebp libxpm \
@@ -27,15 +26,8 @@ RUN set -x && \
     cp /usr/share/zoneinfo/"${TZ}" /etc/localtime && \
     echo "${TZ}" > /etc/timezone
 
-# Fix [Error Code:1002]
-# [docker - example adding www-data user to alpine images](https://gist.github.com/briceburg/47131d8caf235334b6114954a6e64922)
-RUN mkdir /koddata /kodhtml && \
-    chown www-data:www-data /kodhtml /koddata && \
-    chmod 777 /kodhtml /koddata
-    
 # 安装kodexplorer并添加插件
-RUN set -x && \
-    mkidr -p ${KOD_DIR} && \
+RUN mkidr -p ${KOD_DIR} && \
     cd /tmp && \
     wget "$KODEXPLORER_URL" && \
     unzip kodexplorer4.40.zip -d ${KOD_DIR} && \
