@@ -1,4 +1,4 @@
-FROM php:7.4.9-zts-alpine
+FROM php:7.4.9-fpm-alpine3.12
 
 ENV LANG=C.UTF-8
 ENV TZ=Asia/Shanghai
@@ -27,6 +27,12 @@ RUN set -x && \
     cp /usr/share/zoneinfo/"${TZ}" /etc/localtime && \
     echo "${TZ}" > /etc/timezone
 
+# Fix [Error Code:1002]
+# [docker - example adding www-data user to alpine images](https://gist.github.com/briceburg/47131d8caf235334b6114954a6e64922)
+RUN mkdir /koddata /kodhtml && \
+    chown www-data:www-data /kodhtml /koddata && \
+    chmod 777 /kodhtml /koddata
+    
 # 安装kodexplorer并添加插件
 RUN set -x && \
     mkidr -p ${KOD_DIR} && \
@@ -70,12 +76,6 @@ RUN set -x && \
     #unset all_proxy http_proxy https_proxy && \
     # Fix plugin bug: adminer
     sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php
-
-# Fix [Error Code:1002]
-# [docker - example adding www-data user to alpine images](https://gist.github.com/briceburg/47131d8caf235334b6114954a6e64922)
-RUN mkdir /koddata /kodhtml && \
-    chown www-data:www-data /kodhtml /koddata && \
-    chmod 777 /kodhtml /koddata
 
 # 指定工作目录
 WORKDIR /koddata
