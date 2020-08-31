@@ -5,7 +5,7 @@ ENV TZ=Asia/Shanghai
 
 # 编译基础环境
 RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && \
-    apk add --no-cache --update tzdata wget bash \
+    apk add --no-cache --update tzdata \
         p7zip unrar\
 		freetype libpng libjpeg-turbo libwebp libxpm \
         freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev&& \
@@ -19,7 +19,8 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev && \
     # change the TimeZone
     cp /usr/share/zoneinfo/"${TZ}" /etc/localtime && \
-    echo "${TZ}" > /etc/timezone
+    echo "${TZ}" > /etc/timezone && \
+    apk del tzdata
 
 # 官方最新版4.40
 ENV KODEXPLORER_VERSION=4.40
@@ -27,7 +28,8 @@ ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KOD
 ENV KOD_DIR=/var/www/html
 
 # 安装kodexplorer并添加插件
-RUN cd /tmp && \
+RUN apk add --no-cache wget bash && \
+    cd /tmp && \
     wget "$KODEXPLORER_URL" && \
     unzip kodexplorer4.40.zip -d ${KOD_DIR} && \
     # 下载插件包
@@ -55,6 +57,7 @@ RUN cd /tmp && \
     wget -O zoho.zip https://codeload.github.com/hiteochew/kodexplorer-plugins-zoho/zip/master && \
     unzip zoho.zip  && \
     mv kodexplorer-plugins-zoho-master ${KOD_DIR}/plugins/zoho && \
+    apk del wget bash && \
     # 替换arm64的7z以及rar
     cp -f /usr/lib/p7zip/7za ${KOD_DIR}/app/kod/archiveLib/bin/7z && \
     cp -f /usr/lib/p7zip/7za ${KOD_DIR}/plugins/zipView/lib/bin/7z_mac && \
@@ -62,7 +65,6 @@ RUN cd /tmp && \
     cp -f /usr/bin/unrar ${KOD_DIR}/plugins/zipView/lib/bin/rar_mac && \
     rm -rf /tmp/* && \
     #unset all_proxy http_proxy https_proxy && \
-    # 不要改`DATA_PATH`, 会掉权限
     echo "<?php define('DATA_PATH','/koddata/'); " > ${KOD_DIR}/config/define.php  && \
     # Fix bug: `Deprecated: Array and string offset access syntax with curly braces is deprecated in common.function.php on line 1031`
     sed -i 's/ord($text{strlen($text)-1})/ord($text[strlen($text)-1])/' ${KOD_DIR}/app/function/common.function.php && \

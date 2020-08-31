@@ -1,8 +1,2 @@
-#!/bin/bash
-
-set -e
-
-chown -R www-data:www-data /koddata
-chmod -R 777 /koddata
-
-exec "$@"
+#!/bin/sh
+cp -r /var/www/html/data/* /koddata
