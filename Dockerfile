@@ -71,6 +71,10 @@ RUN apk add --no-cache wget bash && \
     # Fix plugin bug: adminer
     sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php
 
+RUN \
+    chown -R www-data:www-data ${KOD_DIR} && \
+    chmod -R 777 /var/www/html/
+
 # 指定工作目录
 WORKDIR /koddata
 
