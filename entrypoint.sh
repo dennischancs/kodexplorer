@@ -1,8 +1,16 @@
-#!/bin/sh
+#!/bin/bash
 
-chown -R www-data:www-data /var/www/html
-chmod -R 777 /var/www/html/
+set -e
 
-mkdir -p /volume2/kodexplorer/data/
-chown -R www-data:www-data /volume2/kodexplorer
-chmod -R 777 /volume2/kodexplorer
+if [ ! -e '/kodhtml/index.php' ]; then
+    cp -a /usr/src/kodexplorer/* /kodhtml
+fi
+
+if [ "$1" = 'php' ] && [ "$(id -u)" = '0' ]; then
+    chown -R www-data:www-data /kodhtml
+    chmod -R 777 /kodhtml
+    chown -R www-data:www-data /koddata
+    chmod -R 777 /koddata
+fi
+
+exec "$@"

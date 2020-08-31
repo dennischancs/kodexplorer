@@ -12,7 +12,7 @@
 docker run -d \
   --name kodexplorer \
   --hostname kodexplorer \
-  -p 5660:80 \
+  -p 5660:9000 \
   -v /mnt:/volume2 \
   --restart unless-stopped \
   dennischancs/kodexplorer
