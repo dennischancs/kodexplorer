@@ -68,7 +68,7 @@ RUN apk add --no-cache wget bash && \
     # 2. cp AriaNg Icon
     cp ${KOD_DIR}/static/ariang/touchicon.png ${KOD_DIR}/static/images/file_icon/icon_app/ariang.png && \
     # 3. add to apps.php
-    sed -i 's#"undefined":0}}#"undefined":0},"AriaNg":{"type":"url","content":"\/static\/ariang\/index\.html","group":"tools","name":"AriaNg","desc":"downloader","icon":"ariang.png","width":"70%","height":"60%","simple":0,"resize":1,"undefined":0}}#' \
+    sed -i 's#"undefined":0}}#"undefined":0},"AriaNg":{"type":"url","content":"http:\/\/127.0.0.1:5218","group":"tools","name":"AriaNg","desc":"downloader","icon":"ariang.png","width":"70%","height":"60%","simple":0,"resize":1,"undefined":0}}#' \
         ${KOD_DIR}/data/system/apps.php && \
     # 4. init newuser's desktop
     sed -i 's#trello#trello,AriaNg#' ${KOD_DIR}/config/setting.php && \
@@ -85,6 +85,17 @@ RUN apk add --no-cache wget bash && \
     sed -i 's/ord($text{strlen($text)-1})/ord($text[strlen($text)-1])/' ${KOD_DIR}/app/function/common.function.php && \
     # Fix plugin bug: adminer
     sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php
+
+# install darkhttpd for AriaNg WebUI
+RUN apk add --no-cache wget make gcc musl-dev && \
+    cd /tmp && wget https://unix4lyfe.org/darkhttpd/darkhttpd-1.12.tar.bz2 && \
+    tar -xf darkhttpd-1.12.tar.bz2 && cd darkhttpd-1.12 && \
+    make && cp darkhttpd /usr/bin && \
+    rm -rf /tmp/* && \
+    apk del wget make gcc musl-dev
+
+EXPOSE 5210
+EXPOSE 5218
 
 # 指定工作目录
 WORKDIR /koddata
