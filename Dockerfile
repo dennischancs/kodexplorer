@@ -19,14 +19,19 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
     docker-php-ext-configure exif --enable-exif && docker-php-ext-install exif && \
     apk del --no-cache freetype-dev libpng-dev libjpeg-turbo-dev libwebp-dev libxpm-dev && \
     # change the TimeZone
-    cp /usr/share/zoneinfo/$TZ /etc/localtime
+    cp /usr/share/zoneinfo/"${TZ}" /etc/localtime && \
+    echo "${TZ}" > /etc/timezone
 
 # Fix [Error Code:1002]
 # [docker - example adding www-data user to alpine images](https://gist.github.com/briceburg/47131d8caf235334b6114954a6e64922)
-# RUN addgroup -g 82 -S www-data && \
-#     adduser -u 82 -D -S -G www-data www-data
+RUN adduser --disabled-password \
+      --shell=/bin/sh \
+      --uid=1000 \
+      php && \
+    addgroup --gid=82 www-data && \
+    addgroup php www-data
 
-USER www-data
+USER php
 # 官方最新版4.40
 ENV KODEXPLORER_VERSION=4.40
 ENV KODEXPLORER_URL="http://static.kodcloud.com/update/download/kodexplorer${KODEXPLORER_VERSION}.zip"
@@ -74,7 +79,7 @@ RUN mkdir -p ${KOD_DIR} && \
   #unset all_proxy http_proxy https_proxy && \
   # Fix plugin bug: adminer
   sed -i 's/break;default:continue/break;default:continue 2/g' ${KOD_DIR}/plugins/adminer/adminer/index.php && \
-  chown -R www-data:www-data ${KOD_DIR}
+  chown -R php:www-data ${KOD_DIR}
 
 
 # 指定工作目录
