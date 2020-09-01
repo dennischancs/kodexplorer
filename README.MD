@@ -4,7 +4,8 @@
 
 1. 基于kodexplorer 4.40
 2. 增加github上所有找得到的插件（街机模拟器除外）
-3. 数据与/var/www/html文件夹分离，可挂载到/volume2并设置为工作目录
+3. 数据与/var/www/html文件夹分离，可挂载到/koddata并设置为工作目录
+4. 增加AriaNg为轻应用+服务（5218端口），该应用入口默认设置在`桌面`和`菜单栏`。
 
 # 使用方法
 
@@ -12,12 +13,22 @@
 docker run -d \
   --name kodexplorer \
   --hostname=kodexplorer \
-  -p 5210:9000 \
+  -p 5210:5210 \
+  -p 5218:5218 \
   -v /your_path/koddata:/koddata \
   -v /var/media/ssdDATA:/koddata/Group/public/home/ssdDATA \
   --restart unless-stopped \
   dennischancs/kodexplorer
 ```
+
+`5210`为kodexplorer端口
+`5218`为AriaNg端口，需要安装aria2c，推荐使用[p3terx/aria2-pro
+](https://hub.docker.com/r/p3terx/aria2-pro)docker镜像。
+
+[optinal]
+kodexplorer的AriaNg轻应用，默认调用本地`/static/ariang/index.html`，本地文件调用速度比从`5218`端口加载速度要慢。
+
+可在容器启动后，进kodexplorer的设置，分别修改`桌面`和`菜单栏`的`/static/ariang/index.html`字段，改为`http://ip:5218`。
 
 # 效果展示
 
@@ -46,6 +57,11 @@ docker run -d \
 ![containers](pic/containers.png)
 
 ![bisheng3](pic/bisheng3.png)
+
+5、AriaNg
+
+![ariang](pic/ariang.png)
+
 
 
 
@@ -81,7 +97,7 @@ arm版毕升office的docker镜像**已知问题**如下：
 【解决方法】换镜像，改配置（见`api-deploy-arm`文件夹，nginx已经改好了。）
 
  【运行问题】编辑office文档，doc/docx、xls/xlsx支持较好，但编辑ppt/pptx文件偶尔会造成文件丢失（只剩下`22B`的空文件）。
- 
+
 ![22B](pic/22B.png)
 
 总之：用作<u>*局域网预览*</u>还是不错的（整体内存占用也不高，还要什么自行车）。

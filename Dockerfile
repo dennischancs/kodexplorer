@@ -68,10 +68,11 @@ RUN apk add --no-cache wget bash && \
     # 2. cp AriaNg Icon
     cp ${KOD_DIR}/static/ariang/touchicon.png ${KOD_DIR}/static/images/file_icon/icon_app/ariang.png && \
     # 3. add to apps.php
-    sed -i 's#"undefined":0}}#"undefined":0},"AriaNg":{"type":"url","content":"http:\\\/\\\/127.0.0.1:5218","group":"tools","name":"AriaNg","desc":"downloader","icon":"ariang.png","width":"70%","height":"60%","simple":0,"resize":1,"undefined":0}}#' \
+    sed -i 's#"undefined":0}}#"undefined":0},"AriaNg":{"type":"url","content":"\/static\/ariang\/index\.html","group":"tools","name":"AriaNg","desc":"downloader","icon":"ariang.png","width":"70%","height":"60%","simple":0,"resize":1,"undefined":0}}#' \
         ${KOD_DIR}/data/system/apps.php && \
-    # 4. init newuser's desktop
-    sed -i 's#trello#trello,AriaNg#' ${KOD_DIR}/config/setting.php && \
+    # 4. init newuser's desktop & menu bar
+    wget -O setting.php https://raw.githubusercontent.com/dennischancs/kodexplorer/master/config/setting.php && \
+    cp -f setting.php ${KOD_DIR}/config/setting.php && \
     apk del wget bash && \
     # 替换arm64的7z以及rar
     cp -f /usr/lib/p7zip/7za ${KOD_DIR}/app/kod/archiveLib/bin/7z && \
